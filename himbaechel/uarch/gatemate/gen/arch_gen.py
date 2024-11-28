@@ -1,3 +1,21 @@
+#
+#  nextpnr -- Next Generation Place and Route
+#
+#  Copyright (C) 2024  The Project Peppercorn Authors.
+#
+#  Permission to use, copy, modify, and/or distribute this software for any
+#  purpose with or without fee is hereby granted, provided that the above
+#  copyright notice and this permission notice appear in all copies.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+#  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+#  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+#  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+#  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+#  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+#  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
+
 from os import path
 import sys
 sys.path.append(path.join(path.dirname(__file__), "../../.."))
@@ -366,6 +384,7 @@ def main():
     ch = Chip("gatemate", "CCGM1A1", X, Y)
     # Init constant ids
     ch.strs.read_constids(path.join(path.dirname(__file__), "..", "constids.inc"))
+    ch.read_gfxids(path.join(path.dirname(__file__), "..", "gfxids.inc"))
     logic = create_logic_tiletype(ch)
     #io = create_io_tiletype(ch)
     #bram = create_bram_tiletype(ch)

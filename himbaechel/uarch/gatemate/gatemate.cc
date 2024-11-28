@@ -1,7 +1,7 @@
 /*
  *  nextpnr -- Next Generation Place and Route
  *
- *  Copyright (C) 2024  Miodrag Milanovic <micko@yosyshq.com>
+ *  Copyright (C) 2024  The Project Peppercorn Authors.
  *
  *  Permission to use, copy, modify, and/or distribute this software for any
  *  purpose with or without fee is hereby granted, provided that the above
@@ -25,34 +25,29 @@
 
 #include "himbaechel_helpers.h"
 
+#include "gatemate.h"
+
 #define GEN_INIT_CONSTIDS
 #define HIMBAECHEL_CONSTIDS "uarch/gatemate/constids.inc"
 #include "himbaechel_constids.h"
 
 NEXTPNR_NAMESPACE_BEGIN
 
-namespace {
-struct GateMateImpl : HimbaechelAPI
+GateMateImpl::~GateMateImpl(){};
+
+void GateMateImpl::init_database(Arch *arch)
 {
-    ~GateMateImpl(){};
-    void init_database(Arch *arch) override
-    {
-        const ArchArgs &args = arch->args;
-        init_uarch_constids(arch);
-        arch->load_chipdb(stringf("gatemate/chipdb-%s.bin", args.device.c_str()));
-        arch->set_speed_grade("DEFAULT");
-    }
+    const ArchArgs &args = arch->args;
+    init_uarch_constids(arch);
+    arch->load_chipdb(stringf("gatemate/chipdb-%s.bin", args.device.c_str()));
+    arch->set_speed_grade("DEFAULT");
+}
 
-    void init(Context *ctx) override
-    {
-        h.init(ctx);
-        HimbaechelAPI::init(ctx);
-    }
-
-  private:
-    HimbaechelHelpers h;
-
-};
+void GateMateImpl::init(Context *ctx)
+{
+    h.init(ctx);
+    HimbaechelAPI::init(ctx);
+}
 
 struct GateMateArch : HimbaechelArch
 {
@@ -63,6 +58,5 @@ struct GateMateArch : HimbaechelArch
         return std::make_unique<GateMateImpl>();
     }
 } gateMateArch;
-} // namespace
 
 NEXTPNR_NAMESPACE_END
