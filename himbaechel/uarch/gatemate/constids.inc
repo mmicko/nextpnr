@@ -1,3 +1,5 @@
+X(CPE)
+
 X(RAM_I1)
 X(RAM_I2)
 X(IN1)
