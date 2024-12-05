@@ -49,6 +49,33 @@ void GateMateImpl::init(Context *ctx)
     HimbaechelAPI::init(ctx);
 }
 
+void GateMateImpl::drawGroup(std::vector<GraphicElement> &g, GroupId group, Loc loc)
+{
+    IdString group_type = ctx->getGroupType(group);
+    IdString group_name = ctx->getGroupName(group)[1];
+    if (group_type == id_SB_BIG) {
+        GraphicElement el;
+        el.type = GraphicElement::TYPE_BOX;
+        el.style = GraphicElement::STYLE_FRAME;
+
+        el.x1 = loc.x + 0.10;
+        el.x2 = el.x1 + 0.05;
+        el.y1 = loc.y + 0.05 + (group_name.index - id_SB_BIG_P1.index) * 0.025;
+        el.y2 = el.y1 - 0.02;
+        g.push_back(el);
+    }
+    if (group_type == id_SB_SML) {
+        GraphicElement el;
+        el.type = GraphicElement::TYPE_BOX;
+        el.style = GraphicElement::STYLE_FRAME;
+
+        el.x1 = loc.x + 0.10 + 0.5;
+        el.x2 = el.x1 + 0.05;
+        el.y1 = loc.y + 0.05 + (group_name.index - id_SB_SML_P1.index) * 0.025 + 0.5;
+        el.y2 = el.y1 - 0.02;
+        g.push_back(el);
+    }
+}
 void GateMateImpl::drawBel(std::vector<GraphicElement> &g, GraphicElement::style_t style, IdString bel_type, Loc loc)
 {
     GraphicElement el;
@@ -63,29 +90,6 @@ void GateMateImpl::drawBel(std::vector<GraphicElement> &g, GraphicElement::style
             el.y2 = el.y1 - 0.05;
             g.push_back(el);
             break;
-    }
-
-    // Each Tile have switch boxes
-    if (loc.z==0) {
-        // SB_BIG
-        GraphicElement el;
-        el.type = GraphicElement::TYPE_BOX;
-        el.style = GraphicElement::STYLE_FRAME;
-        for (int i=0;i<12;i++) {
-            el.x1 = loc.x + 0.10;
-            el.x2 = el.x1 + 0.05;
-            el.y1 = loc.y + 0.05 + i * 0.025;
-            el.y2 = el.y1 - 0.02;
-            g.push_back(el);
-        }
-        // SB_SML
-        for (int i=0;i<12;i++) {
-            el.x1 = loc.x + 0.10 + 0.5;
-            el.x2 = el.x1 + 0.05;
-            el.y1 = loc.y + 0.05 + i * 0.025 + 0.5;
-            el.y2 = el.y1 - 0.02;
-            g.push_back(el);
-        }
     }
 }
 struct GateMateArch : HimbaechelArch

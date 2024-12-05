@@ -37,6 +37,7 @@ struct GateMateImpl : HimbaechelAPI
 
     void init(Context *ctx) override;
 
+    void drawGroup(std::vector<GraphicElement> &g, GroupId group, Loc loc) override;
     void drawBel(std::vector<GraphicElement> &g, GraphicElement::style_t style, IdString bel_type, Loc loc) override;
 
 private:

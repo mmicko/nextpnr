@@ -115,6 +115,7 @@ def create_outmux(tt, z, p):
         pp.extra_data = PipExtraData(PIP_EXTRA_OUTMUX_1 + z, p, i)
 
 def create_sb_big(tt, p):
+    tt.create_group(f"SB_BIG_P{p+1}", "SB_BIG")
     tt.create_wire(f"SB_BIG.P{p+1}.D0", type="SB_BIG_WIRE")
     for i in range(4):
         tt.create_wire(f"SB_BIG.P{p+1}.D2_{i+1}", type="SB_BIG_WIRE")
@@ -177,6 +178,7 @@ def create_sb_big(tt, p):
     pp.extra_data = PipExtraData(PIP_EXTRA_SB_BIG_YDIAG_MUX, p, 7)
 
 def create_sb_sml(tt, p):
+    tt.create_group(f"SB_SML_P{p+1}", "SB_SML")
     tt.create_wire(f"SB_SML.P{p+1}.D0", type="SB_SML_WIRE")
     for i in range(4):
         tt.create_wire(f"SB_SML.P{p+1}.D2_{i+1}", type="SB_SML_WIRE")
