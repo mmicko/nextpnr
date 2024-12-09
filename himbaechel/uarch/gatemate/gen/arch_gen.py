@@ -16,10 +16,23 @@
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
+import os
 from os import path
 import sys
+import argparse
+
 sys.path.append(path.join(path.dirname(__file__), "../../.."))
 from himbaechel_dbgen.chip import *
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--lib", help="Project Peppercorn python database script path", type=str, required=True)
+parser.add_argument("--device", help="name of device to export", type=str, required=True)
+parser.add_argument("--bba", help="bba file to write", type=str, required=True)
+args = parser.parse_args()
+
+sys.path.append(os.path.expanduser(args.lib))
+sys.path += args.lib 
 
 PIP_EXTRA_SB_BIG_Y1_MUX = 1
 PIP_EXTRA_SB_BIG_Y2_MUX = 2
@@ -383,7 +396,7 @@ def create_nodes(ch):
             ch.add_node(node)
 
 def main():
-    ch = Chip("gatemate", "CCGM1A1", X, Y)
+    ch = Chip("gatemate", args.device, X, Y)
     # Init constant ids
     ch.strs.read_constids(path.join(path.dirname(__file__), "..", "constids.inc"))
     ch.read_gfxids(path.join(path.dirname(__file__), "..", "gfxids.inc"))
@@ -410,7 +423,7 @@ def main():
     # Create nodes between tiles
     create_nodes(ch)
     set_timings(ch)
-    ch.write_bba(sys.argv[1])
+    ch.write_bba(args.bba)
 
 if __name__ == '__main__':
     main()
