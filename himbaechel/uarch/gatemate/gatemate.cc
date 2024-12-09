@@ -29,7 +29,11 @@
 
 #define GEN_INIT_CONSTIDS
 #define HIMBAECHEL_CONSTIDS "uarch/gatemate/constids.inc"
+#define HIMBAECHEL_GFXIDS "uarch/gatemate/gfxids.inc"
+#define HIMBAECHEL_UARCH gatemate
+
 #include "himbaechel_constids.h"
+#include "himbaechel_gfxids.h"
 
 NEXTPNR_NAMESPACE_BEGIN
 
@@ -58,10 +62,10 @@ void GateMateImpl::drawGroup(std::vector<GraphicElement> &g, GroupId group, Loc 
         el.type = GraphicElement::TYPE_BOX;
         el.style = GraphicElement::STYLE_FRAME;
 
-        el.x1 = loc.x + 0.10;
-        el.x2 = el.x1 + 0.05;
-        el.y1 = loc.y + 0.05 + (group_name.index - id_SB_BIG_P1.index) * 0.025;
-        el.y2 = el.y1 - 0.02;
+        el.x1 = loc.x + 0.05 + (group_name.index - id_SB_BIG_P01.index) * 0.04;
+        el.x2 = el.x1 + 0.03;
+        el.y1 = loc.y + 0.05 + (group_name.index - id_SB_BIG_P01.index) * 0.04;
+        el.y2 = el.y1 - 0.03;
         g.push_back(el);
     }
     if (group_type == id_SB_SML) {
@@ -69,9 +73,9 @@ void GateMateImpl::drawGroup(std::vector<GraphicElement> &g, GroupId group, Loc 
         el.type = GraphicElement::TYPE_BOX;
         el.style = GraphicElement::STYLE_FRAME;
 
-        el.x1 = loc.x + 0.10 + 0.5;
-        el.x2 = el.x1 + 0.05;
-        el.y1 = loc.y + 0.05 + (group_name.index - id_SB_SML_P1.index) * 0.025 + 0.5;
+        el.x1 = loc.x + 0.05 + (group_name.index - id_SB_SML_P01.index) * 0.03;
+        el.x2 = el.x1 + 0.02;
+        el.y1 = loc.y + 0.05 + (group_name.index - id_SB_SML_P01.index) * 0.03;
         el.y2 = el.y1 - 0.02;
         g.push_back(el);
     }
@@ -84,14 +88,60 @@ void GateMateImpl::drawBel(std::vector<GraphicElement> &g, GraphicElement::style
     switch (bel_type.index)
     {
         case id_CPE.index :
-            el.x1 = loc.x + 0.40 + (loc.z / 2) * 0.5;
-            el.x2 = el.x1 + 0.05;
-            el.y1 = loc.y + 0.40 - (loc.z % 2) * 0.5;
-            el.y2 = el.y1 - 0.05;
+            el.x1 = loc.x + 0.70;
+            el.x2 = el.x1 + 0.20;
+            el.y1 = loc.y + 0.55;
+            el.y2 = el.y1 + 0.40;
             g.push_back(el);
             break;
     }
 }
+
+void GateMateImpl::drawWire(std::vector<GraphicElement> &g, GraphicElement::style_t style, Loc loc, IdString wire_type,
+                int32_t tilewire, IdString tile_type)
+{
+    GraphicElement el;
+    el.type = GraphicElement::TYPE_LINE;
+    el.style = style;
+    switch (tile_type.index) {
+        case id_CPE_BIG.index:
+        case id_CPE_SML.index:
+        case id_CPE.index:
+            switch (wire_type.index) {
+                case id_CPE_WIRE_L.index:
+                    el.x1 = loc.x + 0.70 - 0.02;
+                    el.x2 = el.x1 + 0.02;
+                    el.y1 = loc.y + 0.90 - (tilewire - GFX_WIRE_CPE_IN1) * 0.02;
+                    el.y2 = el.y1;
+                    g.push_back(el);
+                    break;
+                case id_CPE_WIRE_R.index:
+                    el.x1 = loc.x + 0.90;
+                    el.x2 = el.x1 + 0.02;
+                    el.y1 = loc.y + 0.90 - (tilewire - GFX_WIRE_CPE_OUT2 + 9) * 0.02;
+                    el.y2 = el.y1;
+                    g.push_back(el);
+                    break;
+                case id_CPE_WIRE_T.index:
+                    el.x1 = loc.x + 0.75 + (tilewire - GFX_WIRE_CPE_COUTY1) * 0.02;
+                    el.x2 = el.x1;
+                    el.y1 = loc.y + 0.95;
+                    el.y2 = el.y1 + 0.02;
+                    g.push_back(el);
+                    break;
+                case id_CPE_WIRE_B.index:
+                    el.x1 = loc.x + 0.75 + (tilewire - GFX_WIRE_CPE_CINY1) * 0.02;
+                    el.x2 = el.x1;
+                    el.y1 = loc.y + 0.55;
+                    el.y2 = el.y1 - 0.02;
+                    g.push_back(el);
+                    break;    
+
+            }
+            break;
+    }
+}
+
 struct GateMateArch : HimbaechelArch
 {
     GateMateArch() : HimbaechelArch("gatemate"){};

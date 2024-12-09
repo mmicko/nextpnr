@@ -39,6 +39,8 @@ struct GateMateImpl : HimbaechelAPI
 
     void drawGroup(std::vector<GraphicElement> &g, GroupId group, Loc loc) override;
     void drawBel(std::vector<GraphicElement> &g, GraphicElement::style_t style, IdString bel_type, Loc loc) override;
+    void drawWire(std::vector<GraphicElement> &g, GraphicElement::style_t style, Loc loc, IdString wire_type,
+                int32_t tilewire, IdString tile_type) override;
 
 private:
     HimbaechelHelpers h;

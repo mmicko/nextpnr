@@ -276,8 +276,9 @@ class TileType(BBAStruct):
     def create_wire(self, name: str, type: str="", const_value: str=""):
         # Create a new tile wire of a given name and type (optional) in the tile type
         gfx_wire_id = 0
-        if name in self.gfx_wire_ids:
-            gfx_wire_id = self.gfx_wire_ids[name]
+        gfx_name = name.replace('.','_')
+        if gfx_name in self.gfx_wire_ids:
+            gfx_wire_id = self.gfx_wire_ids[gfx_name]
         wire = TileWireData(index=len(self.wires),
             name=self.strs.id(name),
             wire_type=self.strs.id(type),
